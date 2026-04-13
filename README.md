@@ -1,6 +1,6 @@
 # Deep Face Verification — HTW Biometrics (Course Assignment, Part II)
 
-This repository is the **Part II** coursework for the **Biometrics** module at **HTW Berlin**. It follows the pipeline from **Nicholas Renotte (2021): *Build a Deep Facial Recognition App from Paper to Code*** (tutorial Parts 1–8). Primary material is the original **video series** (search the title on YouTube); a common **code companion** is [nicknochnack/SiameseNeuralNetworks](https://github.com/nicknochnack/SiameseNeuralNetworks). This project extends that line of work with **our own image data**, **quantitative evaluation**, and **this documentation**.
+This repository is the **Part II** coursework for the **Biometrics** module at **HTW Berlin**. It follows the pipeline from **Nicholas Renotte (2021): *Build a Deep Facial Recognition App from Paper to Code*** (tutorial Parts 1–8). Primary material is the original **video series** (search the title on YouTube). This project extends that line of work with **our own image data**, **quantitative evaluation**, and **this documentation**.
 
 ## Assignment scope (as specified)
 
