@@ -19,7 +19,7 @@ We implement a **Siamese neural network** that embeds face patches and compares 
 - `positive/` — same identity as the paired anchor  
 - `negative/` — different identity  
 
-Pairs are built from these folders, shuffled, and split into **train** and **test** subsets. During training we log **loss**; on the test split we report **precision** and **recall** at a fixed decision threshold (0.5) on the model outputs, including over the **full test loader** (see `3.ipynb`).
+Pairs are built from these folders, shuffled, and split into **train** and **test** subsets. During training we log **loss**; on the test split we report **precision** and **recall** on model outputs, including over the **full test loader** (see `3.ipynb`).
 
 **Application / deployment-style usage** (after training):
 
@@ -38,6 +38,7 @@ The function **`verify(model, detection_threshold, verification_threshold)`** (i
 | **`2.ipynb`** | **Data acquisition**: optional **LFW** download/extract; webcam capture into `anchor` / `positive` with a fixed **100×100** crop (aligned with training `preprocess`). |
 | **`3.ipynb`** | **Full pipeline**: `preprocess`, `Dataset` / `DataLoader`, model definition, training loop, **test-set precision/recall**, weight save/load sanity check, **`verify`**, OpenCV **Verification** window (V = save + verify, Q = quit), diagnostics. |
 | **`4.ipynb`** | **Lightweight app**: loads **`siamesemodelv2.pt`** only (no training), same `verify` + camera loop — for demonstration without re-running training. |
+| **`5.ipynb`** | **Evaluation notebook**: loads trained weights and reports an extended verification evaluation with confusion matrix, standard classification metrics, biometrics metrics (**FAR/FRR/EER/TAR@FAR**), and **ROC/DET** plots. |
 
 Shared Python helpers: **`common_imports.py`** (paths, `device`, OpenCV/NumPy/PyTorch imports), **`paths.py`** / **`ANC_PATH`** for consistent roots regardless of notebook working directory.
 
@@ -58,6 +59,36 @@ See **`requirements.txt`** (e.g. `torch`, `opencv-python`, `matplotlib`, `numpy`
 - **Generalisation**: **precision** and **recall** on the **held-out test pairs** (single batch and full `test_data` loop) in **`3.ipynb`**.
 
 These metrics describe **pair-classification** behaviour on the collected dataset; they are **not** a substitute for formal operational evaluation (e.g. large-scale benchmarks, demographic fairness analysis, or spoof resistance).
+
+## `5.ipynb` results (example run)
+
+Evaluation setup used in the notebook output:
+- Decision threshold: **0.9744** (selected from the EER operating point)
+- Sample size: **10,000** pairs
+- Class distribution: **9,966 negatives**, **34 positives** (intentionally imbalanced to stress impostor rejection)
+
+Reported metrics (at threshold **0.9744**):
+- Accuracy: **0.9412**
+- Precision: **0.0518**
+- Recall (TAR/TPR): **0.9412**
+- F1-score: **0.0982**
+- Specificity (TNR): **0.9412**
+- Balanced Accuracy: **0.9412**
+- MCC: **0.2133**
+- FAR: **0.0588**
+- FRR: **0.0588**
+- EER: **0.0588** (threshold near **0.9744**)
+- TAR @ FAR <= 0.1%: **0.3235**
+- TAR @ FAR <= 1.0%: **0.7059**
+- ROC-AUC: **0.9894**
+- PR-AUC: **0.3531**
+
+Interpretation:
+- The model separates classes well overall (**high ROC-AUC**), and the selected operating threshold gives a much better security/usability balance for verification.
+- Because the evaluation is strongly imbalanced, **accuracy is less informative**; FAR/FRR, TAR@FAR, and PR-AUC give a more realistic operational picture.
+- We therefore selected **threshold = 0.9744**, the EER operating point, because it gives a balanced compromise where **FAR and FRR are both ~5.88%**.
+- At this threshold, the model keeps high genuine acceptance (**Recall/TAR ~94.12%**) while maintaining substantially lower false acceptance (**FAR ~5.88%**).
+- For deployment-style verification, threshold tuning should target an application-specific FAR (e.g., 1% or 0.1%), then report the corresponding TAR.
 
 ## Limitations (biometrics context)
 
