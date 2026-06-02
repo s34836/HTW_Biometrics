@@ -1,6 +1,6 @@
 # Deep Face Verification — HTW Biometrics (Course Assignment, Part II)
 
-This repository is the **Part II** coursework for the **Biometrics** module at **HTW Berlin**. It follows the pipeline from **Nicholas Renotte (2021): *Build a Deep Facial Recognition App from Paper to Code*** (tutorial Parts 1–8). Primary material is the original **video series** (search the title on YouTube). This project extends that line of work with **our own image data**, **quantitative evaluation**, and **this documentation**.
+This repository is the **Part II** coursework for the **Biometrics** module at **HTW Berlin**. It follows the pipeline from **Nicholas Renotte (2021): *Build a Deep Facial Recognition App from Paper to Code*** (tutorial Parts 1–8). Primary material is the original **video series** (search the title on YouTube). This project extends that line of work with **our own image data**, **quantitative evaluation**, and **this documentation**. The implementation was developed and tested using Python 3.11.6.
 
 ## Assignment scope (as specified)
 
